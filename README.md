@@ -52,28 +52,59 @@ The `using-superpowers` skill enforces a strict rule: **if there is even a 1% ch
 
 ### Usage
 
-#### Option 1: Copy skills into your project
+Antigravity scans for skills in **two locations** — both are fully supported:
 
-Copy the `skills/` directory into your project root. Antigravity will automatically detect and surface the skills.
+| Location | When to use |
+|----------|-------------|
+| `<project-root>/skills/` | Standalone skills repositories (like this one) |
+| `<project-root>/.agents/skills/` | Standard convention for regular projects |
+
+#### Option 1: Place skills in `.agents/skills/` (recommended for regular projects)
+
+```
+your-project/
+├── .agents/
+│   └── skills/
+│       ├── systematic-debugging/
+│       │   └── SKILL.md
+│       ├── test-driven-development/
+│       │   └── SKILL.md
+│       └── ...
+└── your code...
+```
+
+#### Option 2: Place skills in project root `skills/`
+
+Suitable when the repo itself is a skills collection (like this one).
 
 ```
 your-project/
 ├── skills/
 │   ├── systematic-debugging/
 │   │   └── SKILL.md
-│   ├── test-driven-development/
-│   │   └── SKILL.md
 │   └── ...
 └── your code...
 ```
 
-#### Option 2: Clone and reference
+#### Option 3: Global installation (share across all projects)
 
-```bash
-git clone https://github.com/tison-g/superpowers-Antigravity.git
-```
+There is no built-in global skill mechanism in Antigravity, but you can achieve global access by:
 
-Then copy or symlink the `skills/` directory into your working project.
+1. Cloning this repo to a fixed location:
+   ```bash
+   git clone https://github.com/tison-g/superpowers-Antigravity.git C:/skills/superpowers
+   ```
+2. Creating **symlinks** from each project's `.agents/skills/` to the global clone:
+   ```powershell
+   # Windows (PowerShell, run as Administrator)
+   New-Item -ItemType Junction -Path ".agents\skills" -Target "C:\skills\superpowers\skills"
+   ```
+   ```bash
+   # macOS / Linux
+   ln -s /path/to/superpowers-Antigravity/skills .agents/skills
+   ```
+
+This way, updating the global clone updates skills for all projects at once.
 
 ### Differences from the Original Superpowers
 
@@ -147,28 +178,59 @@ description: Use when diagnosing unexpected behavior, failing tests, or unclear 
 
 ### 使用方式
 
-#### 方式一：将 skills 复制到你的项目中
+Antigravity 支持以下**两种 skills 放置位置**，均可被自动识别：
 
-将 `skills/` 目录复制到项目根目录，Antigravity 将自动识别并激活这些技能。
+| 路径 | 适用场景 |
+|------|----------|
+| `<项目根目录>/skills/` | skills 独立仓库（如本仓库） |
+| `<项目根目录>/.agents/skills/` | 普通项目的推荐标准位置 |
+
+#### 方式一：放置在 `.agents/skills/`（普通项目推荐）
+
+```
+your-project/
+├── .agents/
+│   └── skills/
+│       ├── systematic-debugging/
+│       │   └── SKILL.md
+│       ├── test-driven-development/
+│       │   └── SKILL.md
+│       └── ...
+└── 你的代码...
+```
+
+#### 方式二：放置在项目根目录 `skills/`
+
+适用于仓库本身就是 skills 集合的情况（如本仓库）。
 
 ```
 your-project/
 ├── skills/
 │   ├── systematic-debugging/
 │   │   └── SKILL.md
-│   ├── test-driven-development/
-│   │   └── SKILL.md
 │   └── ...
 └── 你的代码...
 ```
 
-#### 方式二：克隆仓库后引用
+#### 方式三：全局安装（跨项目共享）
 
-```bash
-git clone https://github.com/tison-g/superpowers-Antigravity.git
-```
+Antigravity 没有内置的全局 skill 机制，但可以通过**符号链接**实现跨项目共用：
 
-然后将 `skills/` 目录复制或软链接到你的工作项目中。
+1. 将本仓库克隆到一个固定位置：
+   ```bash
+   git clone https://github.com/tison-g/superpowers-Antigravity.git C:/skills/superpowers
+   ```
+2. 在每个项目的 `.agents/skills/` 创建符号链接指向全局克隆：
+   ```powershell
+   # Windows（PowerShell，需管理员权限）
+   New-Item -ItemType Junction -Path ".agents\skills" -Target "C:\skills\superpowers\skills"
+   ```
+   ```bash
+   # macOS / Linux
+   ln -s /path/to/superpowers-Antigravity/skills .agents/skills
+   ```
+
+这样只需更新一次全局克隆，所有项目的 skills 都会同步更新。
 
 ### 与原版 Superpowers 的区别
 
